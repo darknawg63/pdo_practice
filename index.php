@@ -6,3 +6,9 @@ try {
 } catch(PDOException $e) {
     die($e->getMessage());
 }
+
+$query = $conn->query('SELECT * FROM employees LIMIT 6');
+
+while($r = $query->fetch()) {
+    echo $r['first_name'], '<br>';
+}
