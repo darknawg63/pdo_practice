@@ -6,20 +6,12 @@ try {
 } catch(PDOException $e) {
     die($e->getMessage());
 }
+$name = 'Georgi';
+$sql = "SELECT * FROM employees WHERE `first_name` = ? LIMIT 1";
+$query = $conn->prepare($sql);
 
-class GuestbookEntry {
-    public $emp_no, $first_name, $last_name, $gender, $entry;
+$query->execute(array($name));
 
-    public function __construct() {
-        $this->entry = " Hi, my name is {$this->first_name}.";
-    }
-}
-
-// Create the query on the connection
-$query = $conn->query('SELECT * FROM employees LIMIT 6');
-// Set the fetch mode "FETCH_NUM, FETCH_BOTH, FETCH_ASSOC, FETCH_CLASS"
-$query->setFetchMode(PDO::FETCH_CLASS, 'GuestbookEntry');
-// Fetch the results from our query.
-while($r = $query->fetch()) {
-    echo $r->entry, '<br>';
+while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+    echo json_encode($row);
 }
